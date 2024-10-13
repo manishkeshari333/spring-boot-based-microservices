@@ -1,0 +1,5 @@
+package com.spring.cloud.user.management.controller;
+
+public class UserManagement {
+
+}

@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: auth-management-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/management
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update  # Possible values: none, validate, update, create, create-drop
+    show-sql: true  # Shows SQL queries in the console
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect  # For MySQL 8
+  app:
+    jwtSecret: J8R+f8vMeP4VbR2U2R3M3fP8e+dfQ8q6q4bC+czU+o8=
+    jwtExpirationsMs: 19202929
+server:
+  port: 8075    
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+     

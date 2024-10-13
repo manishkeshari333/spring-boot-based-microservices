@@ -1,0 +1,5 @@
+package com.spring.cloud.patient.management.services;
+
+public class ImpPatientService {
+
+}

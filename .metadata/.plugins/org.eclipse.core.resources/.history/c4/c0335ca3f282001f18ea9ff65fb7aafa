@@ -1,0 +1,10 @@
+package com.spring.cloud.patient.management.services;
+
+import com.spring.cloud.patient.management.controller.List;
+import com.spring.cloud.patient.management.controller.Patient;
+
+public interface PatientService {
+
+	List<Patient> getAllPatients();
+
+}

@@ -1,0 +1,27 @@
+package com.spring.cloud.patient.management.entity;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Entity
+@Table(name = "prescription")
+@AllArgsConstructor
+@NoArgsConstructor
+public class Prescription {
+
+	private Long id; // Unique ID for the prescription
+	private Long patientId; // ID of the patient for whom the prescription is written
+	private Long doctorId; // ID of the doctor who issued the prescription
+	private LocalDateTime issueDate; // Date when the prescription was issued
+	private List<Medication> medications; // List of medications prescribed
+	private String additionalNotes; // Any additional instructions or notes by the doctor
+	private String prescriptionStatus; // Status of the prescription (e.g., "Pending", "Completed")
+
+}

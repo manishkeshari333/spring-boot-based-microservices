@@ -1,0 +1,13 @@
+package com.spring.cloud.patient.management.services;
+
+import com.spring.cloud.patient.management.controller.List;
+import com.spring.cloud.patient.management.controller.Patient;
+
+public class PatientService {
+
+	public List<Patient> getAllPatients() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

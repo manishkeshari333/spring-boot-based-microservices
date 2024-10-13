@@ -1,0 +1,15 @@
+package com.spring.cloud.auth.management;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+
+@SpringBootApplication
+@EnableAspectJAutoProxy
+public class SpringCloudAuthManagementApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(SpringCloudAuthManagementApplication.class, args);
+	}
+
+}

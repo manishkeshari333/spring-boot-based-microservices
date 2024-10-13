@@ -1,0 +1,5 @@
+package com.spring.cloud.gateway.server.config;
+
+public class CommonConfig {
+
+}

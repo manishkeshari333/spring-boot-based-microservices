@@ -1,0 +1,69 @@
+package com.spring.cloud.auth.management.util;
+
+import java.io.IOException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Component
+@Slf4j
+@NoArgsConstructor
+@AllArgsConstructor
+public class AuthTokenFilter extends OncePerRequestFilter {
+
+//    @Autowired
+//    private JwtUtils jwtUtils;
+//    @Autowired
+//    private CustomUserDetailsService detailsService;
+
+	private final JwtUtils jwtUtils;
+	private final CustomUserDetailsService detailsService;
+
+	@Autowired
+	public AuthTokenFilter(JwtUtils jwtUtils, CustomUserDetailsService detailsService) {
+		this.jwtUtils = jwtUtils;
+		this.detailsService = detailsService;
+	}
+
+	@SuppressWarnings("null")
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
+		try {
+			String jwt = parseJwt(request);
+			if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
+				String username = jwtUtils.getUsernameFromToken(jwt);
+				UserDetails userDetails = detailsService.loadUserByUsername(username);
+				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+						userDetails, null, userDetails.getAuthorities());
+				log.debug("Roles From JWT :{}", userDetails.getAuthorities());
+
+				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			}
+
+		} catch (Exception e) {
+			log.error("cannot set User Authentication: {}", e);
+		}
+		filterChain.doFilter(request, response);
+	}
+
+	public String parseJwt(HttpServletRequest request) {
+		String jwt = jwtUtils.getJwtFromHeader(request);
+		log.debug("AuthTokenFilter.java: {}", jwt);
+		return jwt;
+	}
+}

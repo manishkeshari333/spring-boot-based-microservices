@@ -1,0 +1,8 @@
+package com.spring.cloud.patient.management.services;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class ImpPatientService implements PatientService {
+
+}

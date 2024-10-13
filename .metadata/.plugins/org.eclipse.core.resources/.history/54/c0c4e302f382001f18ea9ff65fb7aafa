@@ -1,0 +1,42 @@
+package com.spring.cloud.patient.management.services;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.spring.cloud.patient.management.entity.Patient;
+
+@Service
+public class ImpPatientService implements PatientService {
+
+	@Override
+	public List<Patient> getAllPatients() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Patient getPatientById(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Patient createPatient(Patient patient) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Patient updatePatient(String id, Patient patient) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deletePatient(String id) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

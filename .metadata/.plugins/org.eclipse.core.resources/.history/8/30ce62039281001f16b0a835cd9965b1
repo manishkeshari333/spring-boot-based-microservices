@@ -1,0 +1,5 @@
+package com.spring.cloud.auth.management.util;
+
+public class JwtUtils {
+
+}

@@ -1,0 +1,58 @@
+package com.spring.cloud.gateway.server.config;
+
+import org.springframework.cloud.gateway.filter.GatewayFilterChain;
+import org.springframework.cloud.gateway.filter.GlobalFilter;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.server.ServerWebExchange;
+
+import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
+
+@Component
+@Slf4j
+public class JwtAuthenticationFilter implements GlobalFilter {
+
+	private final WebClient webClient;
+
+	public JwtAuthenticationFilter(WebClient webClient) {
+		this.webClient = webClient;
+	}
+
+	@Override
+	public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+		log.info("JwtAuthenticationFilter: Get JWT token from the Request Headers");
+
+		String token = extractJwtFromRequest(exchange.getRequest());
+
+		log.info("JwtAuthenticationFilter :Validate The token");
+		if (token == null || !validateToken(token)) {
+			exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+			return exchange.getResponse().setComplete();
+		}
+
+		// Token valid hai toh request ko aage jaane do
+		log.info("JwtAuthenticationFilter: Process The Next Step, The TOken Is Valid");
+		return chain.filter(exchange);
+	}
+
+	private String extractJwtFromRequest(ServerHttpRequest request) {
+		String bearerToken = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+			return bearerToken.substring(7);
+		}
+		return null;
+	}
+
+	private boolean validateToken(String token) {
+		 return webClient.get()
+			        .uri("http://AUTH-MANAGEMENT-SERVICE/validate-token/{token}", token)
+			        .retrieve()
+			        .bodyToMono(Boolean.class)
+			        .onErrorReturn(false);
+	}
+}

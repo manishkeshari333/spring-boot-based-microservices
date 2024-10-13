@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: api-gateway
+server:
+  port: 8071    
+
+eureka:
+  client:
+    register-with-eureka: false  # API Gateway ko register nahi karna hai
+    fetch-registry: true  # API Gateway ko registry fetch karna hai
+    service-url:
+      defaultZone: http://localhost:8761/eureka/  # Eureka Server ka URL
+
+spring.cloud.gateway.routes:
+  - id: user-service
+    uri: lb://user-service  # Load balancer ke saath user service ka uri
+    predicates:
+      - Path=/user/**  # Ye path user service ko route karega
+  - id: doctor-service
+    uri: lb://doctor-service  # Load balancer ke saath doctor service ka uri
+    predicates:
+      - Path=/doctor/**  # Ye path doctor service ko route karega

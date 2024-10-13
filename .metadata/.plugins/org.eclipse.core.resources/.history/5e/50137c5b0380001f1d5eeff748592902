@@ -1,0 +1,5 @@
+package com.spring.cloud.doctor.management.controller;
+
+public class DoctorManagement {
+
+}

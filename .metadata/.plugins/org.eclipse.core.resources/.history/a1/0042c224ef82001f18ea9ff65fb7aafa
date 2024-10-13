@@ -1,0 +1,25 @@
+package com.spring.cloud.patient.management.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "patientlocation")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class PatientLocation {
+
+	@OneToOne
+	@JoinColumn(name = "patient_id")
+	private Patient patient;
+	private String state;
+	private Long zipcode;
+	private String city;
+	private String currentLocation;
+}
